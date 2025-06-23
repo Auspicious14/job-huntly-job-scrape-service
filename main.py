@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from mangum import Mangum
 from routes.job_routes import router
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,8 +13,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/ping")
+async def ping():
+    return {"status": "alive"}
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
-
-handler = Mangum(app)
