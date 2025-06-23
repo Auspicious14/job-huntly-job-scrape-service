@@ -6,7 +6,7 @@ from services.scraper_service import scrape_jobs
 router = APIRouter()
 
 @router.post("/scrape", response_model=List[JobResponse])
-async def scrape_jobs_controller(payload: Payload):
+async def scrape_jobs_controller(payload: Payload) -> List[JobResponse]:
     """
     Controller handling job scraping requests
     """
