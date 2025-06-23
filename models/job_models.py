@@ -1,6 +1,17 @@
 from typing import Optional, Dict, List, Union
 from pydantic import BaseModel
 
+class Payload(BaseModel):
+    site_name: List[str]
+    search_term: str
+    google_search_term: str
+    location: str
+    results_wanted: int
+    hours_old: int
+    country_indeed: str
+    is_remote: bool
+    job_type: str
+    
 class JobResponse(BaseModel):
     title: str
     company: str
