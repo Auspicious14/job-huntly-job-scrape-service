@@ -10,4 +10,6 @@ async def scrape_jobs_controller(payload: Payload):
     """
     Controller handling job scraping requests
     """
-    return scrape_jobs(payload)
+    results = scrape_jobs(payload)
+    print(results)
+    return results
