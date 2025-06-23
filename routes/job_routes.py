@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from controllers.job_controller import controllerRouter
+from controllers.job_controller import router as job_router
 
-router = APIRouter()
-router.include_router(controllerRouter, prefix="/api")
+router = APIRouter(prefix="/api/jobs")
+router.include_router(job_router)
