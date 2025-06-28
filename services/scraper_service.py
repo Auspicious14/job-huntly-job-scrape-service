@@ -18,9 +18,19 @@ def scrape_jobs(payload: Payload) -> List[JobResponse]:
             hours_old=payload.hours_old,
             country_indeed=payload.country_indeed
         )
+        print(jobs)
         logger.info(f"Successfully scraped {len(jobs)} jobs")
         try:
-            return [JobResponse(**job) for job in jobs]
+            logger.info(f"Type of jobs: {type(jobs)}; First job: {jobs[0] if jobs else 'None'}")
+            job_responses = []
+            for job in jobs:
+                if isinstance(job, dict):
+                    job_responses.append(JobResponse(**job))
+                elif hasattr(job, 'dict'):
+                    job_responses.append(JobResponse(**job.dict()))
+                else:
+                    logger.error(f"Job is not a dict or pydantic model: {job}")
+            return job_responses
         except Exception as e:
             logger.error(f"Error parsing job data: {str(e)}")
             raise HTTPException(status_code=500, detail=f"Error parsing job data: {str(e)}")
