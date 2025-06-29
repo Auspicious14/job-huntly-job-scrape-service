@@ -32,9 +32,11 @@ async def scrape_jobs_controller(payload: Payload) -> Any:
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                 detail="At least one site name must be provided"
             )
-        results, errors = scrape_jobs(payload)
-        logger.info(f"Successfully returned {len(results)} jobs with {len(errors)} errors")
-        return JSONResponse(content={"jobs": [job.dict() for job in results], "errors": errors}, status_code=200)
+        service_response = scrape_jobs(payload)
+        jobs = service_response.get("jobs", [])
+        errors = service_response.get("errors", [])
+        logger.info(f"Successfully returned {len(jobs)} jobs with {len(errors)} errors")
+        return JSONResponse(content={"jobs": jobs, "errors": errors, "success": service_response.get("success", False), "returned_results": service_response.get("returned_results", 0)}, status_code=200)
     except HTTPException as he:
         logger.error(f"HTTP error in controller: {str(he)}")
         raise he
